@@ -4,11 +4,11 @@ const mime = require('mime');
 const morgan = require('morgan');
 const { URL } = require('url');
 
-let options = "{
+let options = {
   headers: {
-    'User-Agent': 'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV) AppleWebKit/531.2+ (KHTML, Like Gecko) WebBrowser/1.0 SmartTV Safari/531.2+'
+    'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV) AppleWebKit/531.2+ (KHTML, Like Gecko) WebBrowser/1.0 SmartTV Safari/531.2+'
   }
-}";
+};
 
 const app = express();
 const port = process.env.PORT || 3000;
