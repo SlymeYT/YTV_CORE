@@ -4,7 +4,7 @@ const mime = require('mime');
 const morgan = require('morgan');
 const { URL } = require('url');
 
-let options = {
+let h_options = {
   headers: {
     'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV) AppleWebKit/531.2+ (KHTML, Like Gecko) WebBrowser/1.0 SmartTV Safari/531.2+'
   }
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
         return res.end("You need to specify <code>url</code> query parameter");
     }
 
-    axios.get(url, options, { responseType: 'arraybuffer' }) // set response type array buffer to access raw data
+    axios.get(url, h_options, { responseType: 'arraybuffer' }) // set response type array buffer to access raw data
         .then(({ data }) => {
             const urlMime = getMimeType(url); // get mime type of the requested url
             if (urlMime === 'text/html') { // replace links only in html
@@ -73,7 +73,7 @@ app.get('/*', (req, res) => {
     }
 
     const url = lastProtoHost + req.originalUrl;
-    axios.get(url, options, { responseType: 'arraybuffer' }) // set response type array buffer to access raw data
+    axios.get(url, h_options, { responseType: 'arraybuffer' }) // set response type array buffer to access raw data
         .then(({ data }) => {
             const urlMime = getMimeType(url); // get mime type of the requested url
             res.type(urlMime);
