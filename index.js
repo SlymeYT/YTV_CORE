@@ -3,6 +3,7 @@ const axios = require('axios');
 const mime = require('mime');
 const morgan = require('morgan');
 const { URL } = require('url');
+const tvua = { headers: { 'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV) AppleWebKit/531.2+ (KHTML, Like Gecko) WebBrowser/1.0 SmartTV Safari/531.2+' } };
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,14 +22,14 @@ const getMimeType = url => {
     return mime.getType(url) || 'text/html'; // if there is no extension return as html
 };
 
-app.get('/', (req, res) => {
+app.get('/', tvua, (req, res) => {
     const { url } = req.query; // get url parameter
     if (!url) {
         res.type('text/html');
         return res.end("You need to specify <code>url</code> query parameter");
     }
 
-    axios.get(url, { responseType: 'arraybuffer' }, { headers: { 'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV) AppleWebKit/531.2+ (KHTML, Like Gecko) WebBrowser/1.0 SmartTV Safari/531.2+' } }) // set response type array buffer to access raw data
+    axios.get(url, tvua, { responseType: 'arraybuffer' }) // set response type array buffer to access raw data
         .then(({ data }) => {
             const urlMime = getMimeType(url); // get mime type of the requested url
             if (urlMime === 'text/html') { // replace links only in html
@@ -60,14 +61,14 @@ app.get('/', (req, res) => {
         });
 });
 
-app.get('/*', (req, res) => {
+app.get('/*', tvua, (req, res) => {
     if (!lastProtoHost) {
         res.type('text/html');
         return res.end("You need to specify <code>url</code> query parameter first");
     }
 
     const url = lastProtoHost + req.originalUrl;
-    axios.get(url, { responseType: 'arraybuffer' }, { headers: { 'User-Agent': 'Mozilla/5.0 (SmartHub; SMART-TV; U; Linux/SmartTV) AppleWebKit/531.2+ (KHTML, Like Gecko) WebBrowser/1.0 SmartTV Safari/531.2+' } }) // set response type array buffer to access raw data
+    axios.get(url, tvua, { responseType: 'arraybuffer' }) // set response type array buffer to access raw data
         .then(({ data }) => {
             const urlMime = getMimeType(url); // get mime type of the requested url
             res.type(urlMime);
