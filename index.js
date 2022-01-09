@@ -58,6 +58,7 @@ app.get('/', (req, res) => {
                 });
             }
             res.type(urlMime);
+            res.header("Access-Control-Allow-Origin", "*");
             res.send(data);
         }).catch(error => {
             console.log(error);
@@ -77,6 +78,7 @@ app.get('/*', (req, res) => {
         .then(({ data }) => {
             const urlMime = getMimeType(url); // get mime type of the requested url
             res.type(urlMime);
+            res.header("Access-Control-Allow-Origin", "*");
             res.send(data);
         }).catch(error => {
             res.status(501);
